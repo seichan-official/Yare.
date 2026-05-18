@@ -101,25 +101,25 @@ export default function ConsentPage() {
         <div className="flex-1 grid overflow-hidden" style={{ gridTemplateColumns: '1fr 320px' }}>
 
           {/* Left: 規約テキスト + チェックリスト */}
-          <div className="flex flex-col h-full overflow-hidden" style={{ borderRight: '0.5px solid #e4e4e0' }}>
+          <div className="overflow-y-auto p-6" style={{ borderRight: '0.5px solid #e4e4e0' }}>
 
             {/* 規約全文 */}
-            <div className="flex-1 min-h-0 overflow-y-auto p-6 pb-2">
-              <div className="flex items-center justify-between mb-3">
+            <div className="mb-5">
+              <div className="flex items-center justify-between mb-2">
                 <span className="text-[13px] font-semibold">利用規約 v{terms?.version ?? '1.0.0'}</span>
                 <a href="/terms" target="_blank" rel="noopener noreferrer"
                   className="text-[11px] text-indigo-600 hover:underline">別タブで開く →</a>
               </div>
               <div
-                className="text-[12px] leading-[1.9] whitespace-pre-wrap rounded-xl p-4"
-                style={{ background: '#fff', border: '0.5px solid #e4e4e0', color: '#444' }}
+                className="text-[12px] leading-[1.9] whitespace-pre-wrap rounded-xl p-4 overflow-y-auto"
+                style={{ background: '#fff', border: '0.5px solid #e4e4e0', color: '#444', height: '280px' }}
               >
                 {terms?.content ?? '読み込み中...'}
               </div>
             </div>
 
             {/* チェックリスト */}
-            <div className="flex-shrink-0 overflow-y-auto p-6 pt-3" style={{ maxHeight: '55%', borderTop: '0.5px solid #e4e4e0' }}>
+            <div style={{ borderTop: '0.5px solid #e4e4e0', paddingTop: '16px' }}>
               <p className="text-[12px] mb-3 font-medium" style={{ color: '#555' }}>
                 上記の規約を読んだ上で、以下の重要事項を<strong>1項目ずつ</strong>確認してください。
               </p>
@@ -157,7 +157,7 @@ export default function ConsentPage() {
                 )
               })}
             </div>
-          </div>
+            </div>
           </div>
 
           {/* Right: 同意状況 + 電子署名 + ボタン */}
