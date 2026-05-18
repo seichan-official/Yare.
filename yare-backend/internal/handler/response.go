@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"log/slog"
 	"net/http"
 
@@ -31,23 +32,18 @@ func created(c echo.Context, data any) error {
 }
 
 func handleError(c echo.Context, err error) error {
+	slog.Error("handleError called", "err", fmt.Sprintf("%+v", err), "uri", c.Request().RequestURI)
 	var domErr *domain.DomainError
 	if errors.As(err, &domErr) {
-		msg := domErr.Message
-		if domErr.HTTPCode >= 500 && domErr.Unwrap() != nil {
-			slog.Error("internal error", "code", domErr.Code, "cause", domErr.Unwrap().Error(), "uri", c.Request().RequestURI)
-			msg = domErr.Unwrap().Error()
-		}
 		return c.JSON(domErr.HTTPCode, ErrorResponse{
-			Error: ErrorDetail{Code: domErr.Code, Message: msg},
+			Error: ErrorDetail{Code: domErr.Code, Message: domErr.Error()},
 		})
 	}
-	slog.Error("unhandled error", "error", err, "uri", c.Request().RequestURI)
-	cause := "unknown"
+	msg := "unknown"
 	if err != nil {
-		cause = err.Error()
+		msg = err.Error()
 	}
 	return c.JSON(http.StatusInternalServerError, ErrorResponse{
-		Error: ErrorDetail{Code: "INTERNAL_ERROR", Message: cause},
+		Error: ErrorDetail{Code: "INTERNAL_ERROR", Message: msg},
 	})
 }
