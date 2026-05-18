@@ -1,0 +1,678 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #1a1a2e;
+    --accent2: #4f46e5;
+    --surface: #ffffff;
+    --surface2: #f8f8f8;
+    --border: rgba(0,0,0,0.07);
+    --text: #111;
+    --text2: #666;
+    --text3: #999;
+    --green: #22c55e;
+    --red: #ef4444;
+    --amber: #f59e0b;
+    --blue: #3b82f6;
+    --nav-w: 220px;
+    --top-h: 56px;
+    --font: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  .shell {
+    display: flex;
+    width: 100%;
+    height: 680px;
+    background: #f3f3f0;
+    font-family: var(--font);
+    font-size: 13px;
+    color: var(--text);
+    overflow: hidden;
+    border-radius: 12px;
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+
+  /* ───────── Sidebar ───────── */
+  .sidebar {
+    width: var(--nav-w);
+    background: #0f0f1a;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .logo {
+    padding: 18px 20px 14px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.5px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  }
+  .logo span { color: #6366f1; }
+
+  .nav-section {
+    padding: 18px 12px 6px;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    margin: 1px 8px;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); }
+  .nav-item.active {
+    background: rgba(99,102,241,0.2);
+    color: #818cf8;
+  }
+  .nav-item .ni { font-size: 16px; }
+  .nav-badge {
+    margin-left: auto;
+    background: #ef4444;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 5px;
+    border-radius: 99px;
+    line-height: 16px;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 14px 12px;
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: #fff;
+    flex-shrink: 0;
+  }
+  .avatar-info { overflow: hidden; }
+  .avatar-name { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .avatar-sub  { font-size: 11px; color: rgba(255,255,255,0.35); }
+
+  /* ───────── Main ───────── */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .topbar {
+    height: var(--top-h);
+    background: var(--surface);
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .topbar-title { font-size: 14px; font-weight: 500; flex: 1; }
+  .tb-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: var(--font);
+  }
+  .tb-btn.outline {
+    border: 0.5px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+  }
+  .tb-btn.primary {
+    background: #4f46e5;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+  }
+
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ───────── KPI Cards ───────── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .kpi-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 0.5px solid var(--border);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .kpi-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .kpi-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .kpi-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-value { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--text3);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .badge-up   { color: var(--green); font-weight: 500; }
+  .badge-down { color: var(--red); font-weight: 500; }
+
+  /* ───────── Active Challenge Card ───────── */
+  .challenge-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 12px;
+  }
+
+  .card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 0.5px solid var(--border);
+    padding: 16px;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .card-title { font-size: 13px; font-weight: 500; }
+  .card-more { font-size: 11px; color: var(--text3); cursor: pointer; }
+
+  /* Challenge progress */
+  .ch-repo { font-family: var(--mono); font-size: 12px; color: var(--text2); margin-bottom: 12px; }
+  .ch-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .ch-meta-item { }
+  .ch-meta-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .ch-meta-value { font-size: 14px; font-weight: 500; }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 4px;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #f0f0f0;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #4f46e5;
+    border-radius: 99px;
+    transition: width 1s ease;
+  }
+
+  /* ───────── Commit Calendar ───────── */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(21, 1fr);
+    gap: 3px;
+    margin-top: 8px;
+  }
+  .cal-cell {
+    aspect-ratio: 1;
+    border-radius: 3px;
+  }
+  .cal-0 { background: #f0f0ee; }
+  .cal-1 { background: #c7d2fe; }
+  .cal-2 { background: #818cf8; }
+  .cal-3 { background: #4f46e5; }
+  .cal-s { background: #fbbf24; }  /* suspicious */
+  .cal-x { background: #fecaca; }  /* invalid */
+
+  .cal-legend {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--text3);
+  }
+  .cal-legend-item { display: flex; align-items: center; gap: 4px; }
+  .cal-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  /* ───────── Streak ring ───────── */
+  .streak-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .ring-wrap { position: relative; width: 110px; height: 110px; }
+  .ring-wrap svg { width: 110px; height: 110px; transform: rotate(-90deg); }
+  .ring-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .ring-center span { font-size: 11px; color: var(--text3); font-weight: 400; }
+  .streak-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+  .streak-stat {
+    text-align: center;
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 8px;
+  }
+  .streak-stat-val { font-size: 16px; font-weight: 600; }
+  .streak-stat-label { font-size: 10px; color: var(--text3); }
+
+  /* ───────── Commits Table ───────── */
+  .table-wrap { overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th {
+    text-align: left;
+    padding: 6px 10px;
+    color: var(--text3);
+    font-weight: 500;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  td {
+    padding: 9px 10px;
+    border-bottom: 0.5px solid var(--border);
+    color: var(--text);
+  }
+  tr:last-child td { border-bottom: none; }
+  .sha { font-family: var(--mono); font-size: 11px; color: var(--text2); }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .s-valid   { background: #dcfce7; color: #15803d; }
+  .s-invalid { background: #fee2e2; color: #b91c1c; }
+  .s-susp    { background: #fef3c7; color: #92400e; }
+
+  /* ───────── Bottom row ───────── */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* Mini bar chart */
+  .bars { display: flex; align-items: flex-end; gap: 4px; height: 60px; margin-top: 10px; }
+  .bar-col { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; }
+  .bar-rect {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    background: #c7d2fe;
+    transition: height 0.5s ease;
+  }
+  .bar-rect.today { background: #4f46e5; }
+  .bar-label { font-size: 9px; color: var(--text3); }
+
+  /* ───────── Notification ───────── */
+  .notif-list { display: flex; flex-direction: column; gap: 8px; }
+  .notif-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--surface2);
+  }
+  .notif-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+  .notif-text { font-size: 12px; color: var(--text); line-height: 1.4; }
+  .notif-time { font-size: 10px; color: var(--text3); margin-top: 2px; }
+</style>
+
+<h2 class="sr-only">Yare - プログラミング学習チャレンジ管理ダッシュボード</h2>
+
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">Yare<span>.</span></div>
+
+    <div class="nav-section">メニュー</div>
+    <div class="nav-item active"><i class="ti ti-layout-dashboard ni" aria-hidden="true"></i> ダッシュボード</div>
+    <div class="nav-item"><i class="ti ti-flame ni" aria-hidden="true"></i> チャレンジ</div>
+    <div class="nav-item"><i class="ti ti-git-commit ni" aria-hidden="true"></i> コミット履歴</div>
+    <div class="nav-item">
+      <i class="ti ti-bell ni" aria-hidden="true"></i> 通知
+      <span class="nav-badge">3</span>
+    </div>
+
+    <div class="nav-section">アカウント</div>
+    <div class="nav-item"><i class="ti ti-credit-card ni" aria-hidden="true"></i> 支払い設定</div>
+    <div class="nav-item"><i class="ti ti-file-text ni" aria-hidden="true"></i> 規約・ログ</div>
+    <div class="nav-item"><i class="ti ti-settings ni" aria-hidden="true"></i> 設定</div>
+
+    <div class="sidebar-footer">
+      <div class="avatar">YU</div>
+      <div class="avatar-info">
+        <div class="avatar-name">yamada_user</div>
+        <div class="avatar-sub">github.com/yamada</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <span class="topbar-title">ダッシュボード</span>
+      <button class="tb-btn outline"><i class="ti ti-help-circle" aria-hidden="true"></i> ヘルプ</button>
+      <button class="tb-btn primary" onclick="sendPrompt('チャレンジを新しく作成したい')"><i class="ti ti-plus" aria-hidden="true"></i> 新規チャレンジ ↗</button>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- KPI -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">継続日数</span>
+            <div class="kpi-icon" style="background:#ede9fe;"><i class="ti ti-flame" style="color:#7c3aed;font-size:16px;" aria-hidden="true"></i></div>
+          </div>
+          <div class="kpi-value">23<small style="font-size:13px;color:var(--text3);font-weight:400;">日</small></div>
+          <div class="kpi-sub"><span class="badge-up">↑ 最長記録</span> 更新中</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">有効コミット</span>
+            <div class="kpi-icon" style="background:#d1fae5;"><i class="ti ti-check" style="color:#059669;font-size:16px;" aria-hidden="true"></i></div>
+          </div>
+          <div class="kpi-value">89<small style="font-size:13px;color:var(--text3);font-weight:400;">/92</small></div>
+          <div class="kpi-sub"><span class="badge-up">▲ 96.7%</span> 達成率</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">残日数</span>
+            <div class="kpi-icon" style="background:#fef3c7;"><i class="ti ti-clock" style="color:#d97706;font-size:16px;" aria-hidden="true"></i></div>
+          </div>
+          <div class="kpi-value">7<small style="font-size:13px;color:var(--text3);font-weight:400;">日</small></div>
+          <div class="kpi-sub" style="color:var(--amber);">2026/05/25 まで</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">チャレンジ金額</span>
+            <div class="kpi-icon" style="background:#fee2e2;"><i class="ti ti-currency-yen" style="color:#dc2626;font-size:16px;" aria-hidden="true"></i></div>
+          </div>
+          <div class="kpi-value" style="color:#dc2626;">¥5,000</div>
+          <div class="kpi-sub">違反金 <span style="font-weight:500;">¥10,000</span></div>
+        </div>
+      </div>
+
+      <!-- Challenge + Ring -->
+      <div class="challenge-row">
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="ti ti-flame" style="color:#4f46e5;font-size:14px;vertical-align:-2px;" aria-hidden="true"></i> アクティブチャレンジ</span>
+            <span class="card-more">詳細 →</span>
+          </div>
+          <div class="ch-repo">yamada_user / typescript-learning</div>
+          <div class="ch-meta">
+            <div class="ch-meta-item">
+              <div class="ch-meta-label">ステータス</div>
+              <div class="ch-meta-value" style="color:#059669;">● 進行中</div>
+            </div>
+            <div class="ch-meta-item">
+              <div class="ch-meta-label">頻度</div>
+              <div class="ch-meta-value">毎日</div>
+            </div>
+            <div class="ch-meta-item">
+              <div class="ch-meta-label">最小行数</div>
+              <div class="ch-meta-value">30行/日</div>
+            </div>
+          </div>
+          <div class="progress-label">
+            <span>進捗</span>
+            <span style="font-weight:500;color:#4f46e5;">89 / 96日</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:92.7%"></div></div>
+
+          <!-- Calendar -->
+          <div style="margin-top:14px;">
+            <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">最近21日のコミット</div>
+            <div class="calendar-grid" id="calGrid"></div>
+            <div class="cal-legend">
+              <div class="cal-legend-item"><div class="cal-dot" style="background:#4f46e5;"></div>有効</div>
+              <div class="cal-legend-item"><div class="cal-dot" style="background:#fbbf24;"></div>審査中</div>
+              <div class="cal-legend-item"><div class="cal-dot" style="background:#fecaca;"></div>無効</div>
+              <div class="cal-legend-item"><div class="cal-dot" style="background:#f0f0ee;"></div>なし</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card streak-card">
+          <div style="font-size:13px;font-weight:500;align-self:flex-start;">達成率</div>
+          <div class="ring-wrap">
+            <svg viewBox="0 0 110 110">
+              <circle cx="55" cy="55" r="44" fill="none" stroke="#f0f0ee" stroke-width="10"/>
+              <circle cx="55" cy="55" r="44" fill="none" stroke="#4f46e5" stroke-width="10"
+                stroke-dasharray="276.5" stroke-dashoffset="20" stroke-linecap="round"/>
+              <circle cx="55" cy="55" r="35" fill="none" stroke="#c7d2fe" stroke-width="8"
+                stroke-dasharray="219.9" stroke-dashoffset="30" stroke-linecap="round"/>
+            </svg>
+            <div class="ring-center">96<small style="font-size:13px;">%</small><span>達成</span></div>
+          </div>
+          <div class="streak-stats">
+            <div class="streak-stat">
+              <div class="streak-stat-val" style="color:#4f46e5;">23🔥</div>
+              <div class="streak-stat-label">現在連続</div>
+            </div>
+            <div class="streak-stat">
+              <div class="streak-stat-val">31</div>
+              <div class="streak-stat-label">最長記録</div>
+            </div>
+            <div class="streak-stat">
+              <div class="streak-stat-val" style="color:#22c55e;">¥0</div>
+              <div class="streak-stat-label">支払済み</div>
+            </div>
+            <div class="streak-stat">
+              <div class="streak-stat-val">3</div>
+              <div class="streak-stat-label">完了チャレンジ</div>
+            </div>
+          </div>
+          <button class="tb-btn outline" style="width:100%;justify-content:center;font-size:12px;" onclick="sendPrompt('今のチャレンジの詳細を見せて')">詳細を見る ↗</button>
+        </div>
+      </div>
+
+      <!-- Bottom row -->
+      <div class="bottom-row">
+
+        <!-- Recent commits table -->
+        <div class="card table-wrap">
+          <div class="card-header">
+            <span class="card-title">最近のコミット</span>
+            <span class="card-more">すべて →</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>SHA</th>
+                <th>メッセージ</th>
+                <th>日付</th>
+                <th>結果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="sha">a3f9c12</td>
+                <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">add TypeScript generics examples</td>
+                <td>05/18</td>
+                <td><span class="status-badge s-valid">● valid</span></td>
+              </tr>
+              <tr>
+                <td class="sha">b8e2d47</td>
+                <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">implement async/await patterns</td>
+                <td>05/17</td>
+                <td><span class="status-badge s-valid">● valid</span></td>
+              </tr>
+              <tr>
+                <td class="sha">c1a7f85</td>
+                <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">refactor class components</td>
+                <td>05/16</td>
+                <td><span class="status-badge s-susp">◐ 審査中</span></td>
+              </tr>
+              <tr>
+                <td class="sha">d4b3e91</td>
+                <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">fix type errors in util</td>
+                <td>05/15</td>
+                <td><span class="status-badge s-valid">● valid</span></td>
+              </tr>
+              <tr>
+                <td class="sha">e9c5a32</td>
+                <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">add interface definitions</td>
+                <td>05/14</td>
+                <td><span class="status-badge s-invalid">✕ invalid</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Weekly bar chart + notifications -->
+        <div style="display:flex;flex-direction:column;gap:12px;">
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">今週のコミット行数</span>
+            </div>
+            <div class="bars" id="barChart"></div>
+            <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-top:4px;">
+              <span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span><span style="color:#4f46e5;font-weight:500;">今日</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title"><i class="ti ti-bell" style="font-size:13px;vertical-align:-1px;" aria-hidden="true"></i> 通知</span>
+              <span class="nav-badge" style="background:#f59e0b;">3</span>
+            </div>
+            <div class="notif-list">
+              <div class="notif-item">
+                <div class="notif-dot" style="background:#f59e0b;"></div>
+                <div>
+                  <div class="notif-text">コミット <code style="font-size:10px;background:#f0f0f0;padding:1px 4px;border-radius:3px;">c1a7f85</code> が審査中です。7日以内に回答してください。</div>
+                  <div class="notif-time">1時間前</div>
+                </div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-dot" style="background:#4f46e5;"></div>
+                <div>
+                  <div class="notif-text">チャレンジ残り7日！引き続き頑張りましょう。</div>
+                  <div class="notif-time">今日 9:00</div>
+                </div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-dot" style="background:#22c55e;"></div>
+                <div>
+                  <div class="notif-text">昨日のコミットを確認しました。有効です。</div>
+                  <div class="notif-time">昨日</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const calData = [3,3,2,3,2,1,0,3,3,2,3,1,3,3,'s',3,3,2,0,'x',3];
+const grid = document.getElementById('calGrid');
+calData.forEach(v => {
+  const d = document.createElement('div');
+  d.className = 'cal-cell cal-' + v;
+  grid.appendChild(d);
+});
+
+const barData = [45, 82, 67, 120, 95, 38, 110];
+const maxBar = Math.max(...barData);
+const bc = document.getElementById('barChart');
+barData.forEach((v, i) => {
+  const col = document.createElement('div');
+  col.className = 'bar-col';
+  const rect = document.createElement('div');
+  rect.className = 'bar-rect' + (i === 6 ? ' today' : '');
+  rect.style.height = Math.round((v / maxBar) * 56) + 'px';
+  const lbl = document.createElement('div');
+  lbl.className = 'bar-label';
+  lbl.textContent = v;
+  col.appendChild(rect);
+  col.appendChild(lbl);
+  bc.appendChild(col);
+});
+</script>
