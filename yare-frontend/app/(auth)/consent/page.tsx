@@ -100,22 +100,30 @@ export default function ConsentPage() {
 
         <div className="flex-1 grid overflow-hidden" style={{ gridTemplateColumns: '1fr 320px' }}>
 
-          {/* Left: チェックリスト */}
-          <div className="overflow-y-auto p-6" style={{ borderRight: '0.5px solid #e4e4e0' }}>
-            <div className="mb-4 p-4 rounded-xl" style={{ background: '#fff', border: '0.5px solid #e4e4e0' }}>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[13px] font-medium">利用規約 v{terms?.version ?? '1.0.0'}</span>
+          {/* Left: 規約テキスト + チェックリスト */}
+          <div className="flex flex-col overflow-hidden" style={{ borderRight: '0.5px solid #e4e4e0' }}>
+
+            {/* 規約全文 */}
+            <div className="flex-1 overflow-y-auto p-6 pb-2">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[13px] font-semibold">利用規約 v{terms?.version ?? '1.0.0'}</span>
                 <a href="/terms" target="_blank" rel="noopener noreferrer"
-                  className="text-[11px] text-indigo-600 hover:underline">全文を読む →</a>
+                  className="text-[11px] text-indigo-600 hover:underline">別タブで開く →</a>
               </div>
-              <p className="text-[11px] leading-[1.7]" style={{ color: '#9d9d99' }}>
-                本サービスはプログラミング学習の継続を支援するサービスです。チャレンジ未達成の場合、事前に設定した金額が請求されます。以下の各項目を確認し、同意してください。
-              </p>
+              <div
+                className="text-[12px] leading-[1.9] whitespace-pre-wrap rounded-xl p-4"
+                style={{ background: '#fff', border: '0.5px solid #e4e4e0', color: '#444' }}
+              >
+                {terms?.content ?? '読み込み中...'}
+              </div>
             </div>
-            <p className="text-[13px] mb-4 leading-[1.7]" style={{ color: '#666' }}>
-              Yareをご利用いただくにあたり、以下の重要事項を<strong>1項目ずつ</strong>ご確認ください。
-            </p>
-            <div className="flex flex-col gap-2.5">
+
+            {/* チェックリスト */}
+            <div className="flex-shrink-0 overflow-y-auto p-6 pt-3" style={{ maxHeight: '55%', borderTop: '0.5px solid #e4e4e0' }}>
+              <p className="text-[12px] mb-3 font-medium" style={{ color: '#555' }}>
+                上記の規約を読んだ上で、以下の重要事項を<strong>1項目ずつ</strong>確認してください。
+              </p>
+              <div className="flex flex-col gap-2.5">
               {items.map((item) => {
                 const isChecked = !!checked[item.id]
                 return (
@@ -149,6 +157,7 @@ export default function ConsentPage() {
                 )
               })}
             </div>
+          </div>
           </div>
 
           {/* Right: 同意状況 + 電子署名 + ボタン */}
