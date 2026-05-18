@@ -3,8 +3,8 @@ package handler
 import (
 	"errors"
 	"fmt"
-	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/seichan-official/yare-backend/internal/domain"
@@ -32,7 +32,7 @@ func created(c echo.Context, data any) error {
 }
 
 func handleError(c echo.Context, err error) error {
-	slog.Error("handleError called", "err", fmt.Sprintf("%+v", err), "uri", c.Request().RequestURI)
+	fmt.Fprintf(os.Stderr, "[DEBUG] handleError: %+v\n", err)
 	var domErr *domain.DomainError
 	if errors.As(err, &domErr) {
 		return c.JSON(domErr.HTTPCode, ErrorResponse{
