@@ -62,7 +62,7 @@ func Load() (*Config, error) {
 	cfg := &Config{
 		App: AppConfig{
 			Env:         getEnv("APP_ENV", "development"),
-			Port:        getEnv("APP_PORT", "8080"),
+			Port:        getEnv("PORT", getEnv("APP_PORT", "8080")),
 			FrontendURL: getEnv("FRONTEND_URL", "http://localhost:3000"),
 			APIBaseURL:  getEnv("API_BASE_URL", "http://localhost:8080"),
 		},
