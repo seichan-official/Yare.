@@ -102,6 +102,16 @@ export default function ConsentPage() {
 
           {/* Left: チェックリスト */}
           <div className="overflow-y-auto p-6" style={{ borderRight: '0.5px solid #e4e4e0' }}>
+            <div className="mb-4 p-4 rounded-xl" style={{ background: '#fff', border: '0.5px solid #e4e4e0' }}>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[13px] font-medium">利用規約 v{terms?.version ?? '1.0.0'}</span>
+                <a href="/terms" target="_blank" rel="noopener noreferrer"
+                  className="text-[11px] text-indigo-600 hover:underline">全文を読む →</a>
+              </div>
+              <p className="text-[11px] leading-[1.7]" style={{ color: '#9d9d99' }}>
+                本サービスはプログラミング学習の継続を支援するサービスです。チャレンジ未達成の場合、事前に設定した金額が請求されます。以下の各項目を確認し、同意してください。
+              </p>
+            </div>
             <p className="text-[13px] mb-4 leading-[1.7]" style={{ color: '#666' }}>
               Yareをご利用いただくにあたり、以下の重要事項を<strong>1項目ずつ</strong>ご確認ください。
             </p>
