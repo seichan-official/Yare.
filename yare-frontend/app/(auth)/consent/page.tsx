@@ -101,10 +101,10 @@ export default function ConsentPage() {
         <div className="flex-1 grid overflow-hidden" style={{ gridTemplateColumns: '1fr 320px' }}>
 
           {/* Left: 規約テキスト + チェックリスト */}
-          <div className="flex flex-col overflow-hidden" style={{ borderRight: '0.5px solid #e4e4e0' }}>
+          <div className="flex flex-col h-full overflow-hidden" style={{ borderRight: '0.5px solid #e4e4e0' }}>
 
             {/* 規約全文 */}
-            <div className="flex-1 overflow-y-auto p-6 pb-2">
+            <div className="flex-1 min-h-0 overflow-y-auto p-6 pb-2">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[13px] font-semibold">利用規約 v{terms?.version ?? '1.0.0'}</span>
                 <a href="/terms" target="_blank" rel="noopener noreferrer"
