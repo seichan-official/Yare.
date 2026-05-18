@@ -33,15 +33,21 @@ func created(c echo.Context, data any) error {
 func handleError(c echo.Context, err error) error {
 	var domErr *domain.DomainError
 	if errors.As(err, &domErr) {
-		if domErr.HTTPCode >= 500 {
-			slog.Error("internal error", "code", domErr.Code, "cause", domErr.Unwrap(), "uri", c.Request().RequestURI)
+		msg := domErr.Message
+		if domErr.HTTPCode >= 500 && domErr.Unwrap() != nil {
+			slog.Error("internal error", "code", domErr.Code, "cause", domErr.Unwrap().Error(), "uri", c.Request().RequestURI)
+			msg = domErr.Unwrap().Error()
 		}
 		return c.JSON(domErr.HTTPCode, ErrorResponse{
-			Error: ErrorDetail{Code: domErr.Code, Message: domErr.Message},
+			Error: ErrorDetail{Code: domErr.Code, Message: msg},
 		})
 	}
 	slog.Error("unhandled error", "error", err, "uri", c.Request().RequestURI)
+	cause := "unknown"
+	if err != nil {
+		cause = err.Error()
+	}
 	return c.JSON(http.StatusInternalServerError, ErrorResponse{
-		Error: ErrorDetail{Code: "INTERNAL_ERROR", Message: "サーバー内部エラーが発生しました"},
+		Error: ErrorDetail{Code: "INTERNAL_ERROR", Message: cause},
 	})
 }
