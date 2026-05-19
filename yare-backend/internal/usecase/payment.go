@@ -23,7 +23,7 @@ func NewPaymentUseCase(q db.Querier, stripe *stripeinfra.Client) *PaymentUseCase
 }
 
 type SetupIntentResult struct {
-	ClientSecret string
+	ClientSecret string `json:"client_secret"`
 }
 
 func (uc *PaymentUseCase) CreateSetupIntent(ctx context.Context, userID uuid.UUID, email, name string) (*SetupIntentResult, error) {
