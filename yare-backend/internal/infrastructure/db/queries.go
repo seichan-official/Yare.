@@ -49,7 +49,17 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (*User, erro
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (*User, error) {
 	row := q.pool.QueryRow(ctx,
 		`INSERT INTO users (github_user_id, github_login, email, display_name, avatar_url, github_access_token, role, status)
-		 VALUES ($1, $2, $3, $4, $5, $6, 'user', 'active') RETURNING
+		 VALUES ($1, $2, $3, $4, $5, $6, 'user', 'active')
+		 ON CONFLICT (github_user_id) DO UPDATE SET
+		   github_login = EXCLUDED.github_login,
+		   email = EXCLUDED.email,
+		   display_name = EXCLUDED.display_name,
+		   avatar_url = EXCLUDED.avatar_url,
+		   github_access_token = EXCLUDED.github_access_token,
+		   status = 'active',
+		   deleted_at = NULL,
+		   updated_at = now()
+		 RETURNING
 		 id, github_user_id, github_login, email, display_name, avatar_url,
 		 github_access_token, age_verified_at, role, status, totp_secret,
 		 created_at, updated_at, deleted_at`,
