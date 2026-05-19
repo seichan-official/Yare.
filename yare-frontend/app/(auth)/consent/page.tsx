@@ -29,7 +29,9 @@ function validateDate(val: string): boolean {
   const d = Number(val.slice(6, 8))
   if (m < 1 || m > 12 || d < 1 || d > 31) return false
   const date = new Date(y, m - 1, d)
-  return date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d
+  if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) return false
+  const today = new Date()
+  return y === today.getFullYear() && m - 1 === today.getMonth() && d === today.getDate()
 }
 
 export default function ConsentPage() {

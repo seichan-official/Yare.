@@ -45,6 +45,11 @@ export default function SettingsPage() {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       })
+      if (res.status === 401) {
+        clearTokens()
+        router.push('/signin')
+        return
+      }
       if (res.status === 409) {
         alert('アクティブなチャレンジがあるため退会できません。チャレンジ終了後に再度お試しください。')
         return
