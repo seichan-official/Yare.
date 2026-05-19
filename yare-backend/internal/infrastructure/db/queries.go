@@ -57,6 +57,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (*User, 
 		   avatar_url = EXCLUDED.avatar_url,
 		   github_access_token = EXCLUDED.github_access_token,
 		   status = 'active',
+		   age_verified_at = NULL,
 		   deleted_at = NULL,
 		   updated_at = now()
 		 RETURNING
