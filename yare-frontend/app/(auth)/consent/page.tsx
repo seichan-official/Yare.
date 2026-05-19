@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { api } from '@/lib/api'
 import { getAccessToken, getUser } from '@/lib/auth'
@@ -41,6 +41,8 @@ export default function ConsentPage() {
   const [sigDate, setSigDate] = useState(todayYYYYMMDD())
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [termsScrolled, setTermsScrolled] = useState(false)
+  const termsRef = useRef<HTMLDivElement>(null)
 
   const items = terms?.checkpoint_items || FALLBACK_ITEMS
   const allChecked = items.every((i) => checked[i.id])
@@ -111,6 +113,13 @@ export default function ConsentPage() {
                   className="text-[11px] text-indigo-600 hover:underline">別タブで開く →</a>
               </div>
               <div
+                ref={termsRef}
+                onScroll={(e) => {
+                  const el = e.currentTarget
+                  if (el.scrollTop + el.clientHeight >= el.scrollHeight - 8) {
+                    setTermsScrolled(true)
+                  }
+                }}
                 className="text-[12px] leading-[1.9] whitespace-pre-wrap rounded-xl p-4 overflow-y-auto"
                 style={{ background: '#fff', border: '0.5px solid #e4e4e0', color: '#444', height: '280px' }}
               >{`第1条（適用）
@@ -143,7 +152,10 @@ export default function ConsentPage() {
             </div>
 
             {/* チェックリスト */}
-            <div style={{ borderTop: '0.5px solid #e4e4e0', paddingTop: '16px' }}>
+            <div style={{ borderTop: '0.5px solid #e4e4e0', paddingTop: '16px', opacity: termsScrolled ? 1 : 0.4, pointerEvents: termsScrolled ? 'auto' : 'none' }}>
+              {!termsScrolled && (
+                <p className="text-[11px] mb-2 text-center" style={{ color: '#9d9d99' }}>↑ 規約を最後までスクロールするとチェックできます</p>
+              )}
               <p className="text-[12px] mb-3 font-medium" style={{ color: '#555' }}>
                 上記の規約を読んだ上で、以下の重要事項を<strong>1項目ずつ</strong>確認してください。
               </p>
