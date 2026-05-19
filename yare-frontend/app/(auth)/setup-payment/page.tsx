@@ -95,12 +95,21 @@ export default function SetupPaymentPage() {
   const router = useRouter()
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [errorMsg, setErrorMsg] = useState('')
 
   useEffect(() => {
     if (!token) { router.push('/signin'); return }
     api.createSetupIntent(token)
       .then((r) => setClientSecret(r.data.client_secret))
-      .catch(() => {})
+      .catch((e: unknown) => {
+        const msg = e && typeof e === 'object' && 'error' in e
+          ? (e as { error: { message: string } }).error.message
+          : String(e)
+        setErrorMsg(msg)
+        if (msg.includes('401') || msg.includes('認証')) {
+          router.push('/signin')
+        }
+      })
       .finally(() => setLoading(false))
   }, [token, router])
 
@@ -150,6 +159,7 @@ export default function SetupPaymentPage() {
           ) : (
             <div className="text-center text-sm py-4 text-red-600">
               決済情報の読み込みに失敗しました。
+              {errorMsg && <p className="text-xs mt-1 text-red-400">{errorMsg}</p>}
               <button onClick={() => router.push('/dashboard')} className="block mx-auto mt-2 text-indigo-600 hover:underline text-xs">
                 スキップしてダッシュボードへ
               </button>
