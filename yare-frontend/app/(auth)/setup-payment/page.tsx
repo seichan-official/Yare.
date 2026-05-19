@@ -102,13 +102,19 @@ export default function SetupPaymentPage() {
     api.createSetupIntent(token)
       .then((r) => setClientSecret(r.data.client_secret))
       .catch((e: unknown) => {
-        const msg = e && typeof e === 'object' && 'error' in e
-          ? (e as { error: { message: string } }).error.message
-          : String(e)
-        setErrorMsg(msg)
-        if (msg.includes('401') || msg.includes('認証')) {
-          router.push('/signin')
+        // Echo の HTTPError は { message: "..." }、カスタムエラーは { error: { message: "..." } }
+        if (e && typeof e === 'object') {
+          if ('message' in e) {
+            // 401 = トークン切れ → 再ログイン
+            router.push('/signin')
+            return
+          }
+          if ('error' in e) {
+            setErrorMsg((e as { error: { message: string } }).error.message)
+            return
+          }
         }
+        setErrorMsg('決済サービスへの接続に失敗しました')
       })
       .finally(() => setLoading(false))
   }, [token, router])
