@@ -61,6 +61,14 @@ class ApiClient {
     )
   }
 
+  async savePaymentMethod(token: string, paymentMethodId: string) {
+    return this.request<void>(
+      '/api/v1/payment/method',
+      { method: 'POST', body: JSON.stringify({ payment_method_id: paymentMethodId }) },
+      token
+    )
+  }
+
   // Challenges
   async createChallenge(token: string, body: {
     repositories: { github_repo_id: number; full_name: string }[]

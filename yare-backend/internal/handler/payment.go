@@ -18,6 +18,25 @@ func NewPaymentHandler(uc *usecase.PaymentUseCase, q db.Querier) *PaymentHandler
 	return &PaymentHandler{uc: uc, db: q}
 }
 
+type savePaymentMethodRequest struct {
+	PaymentMethodID string `json:"payment_method_id" validate:"required"`
+}
+
+func (h *PaymentHandler) SavePaymentMethod(c echo.Context) error {
+	userID, err := middleware.GetUserID(c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, "認証が必要です")
+	}
+	var req savePaymentMethodRequest
+	if err := c.Bind(&req); err != nil || req.PaymentMethodID == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, "payment_method_id が必要です")
+	}
+	if err := h.uc.SavePaymentMethod(c.Request().Context(), userID, req.PaymentMethodID); err != nil {
+		return handleError(c, err)
+	}
+	return c.NoContent(http.StatusNoContent)
+}
+
 func (h *PaymentHandler) CreateSetupIntent(c echo.Context) error {
 	userID, err := middleware.GetUserID(c)
 	if err != nil {

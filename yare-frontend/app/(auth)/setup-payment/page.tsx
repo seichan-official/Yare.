@@ -35,7 +35,7 @@ function CardForm({ clientSecret }: { clientSecret: string }) {
     const cardNumber = elements.getElement(CardNumberElement)
     if (!cardNumber) return
 
-    const { error: stripeError } = await stripe.confirmCardSetup(clientSecret, {
+    const { setupIntent, error: stripeError } = await stripe.confirmCardSetup(clientSecret, {
       payment_method: { card: cardNumber },
     })
 
@@ -43,6 +43,12 @@ function CardForm({ clientSecret }: { clientSecret: string }) {
       setError(stripeError.message || '決済エラーが発生しました')
       setLoading(false)
       return
+    }
+
+    // payment_method_id をバックエンドに保存
+    const token = getAccessToken()
+    if (token && setupIntent?.payment_method) {
+      await api.savePaymentMethod(token, String(setupIntent.payment_method)).catch(() => {})
     }
     router.push('/dashboard')
   }

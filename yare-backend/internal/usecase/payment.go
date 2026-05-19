@@ -51,6 +51,16 @@ func (uc *PaymentUseCase) CreateSetupIntent(ctx context.Context, userID uuid.UUI
 	return &SetupIntentResult{ClientSecret: result.ClientSecret}, nil
 }
 
+func (uc *PaymentUseCase) SavePaymentMethod(ctx context.Context, userID uuid.UUID, paymentMethodID string) error {
+	if err := uc.db.UpdateStripeCustomerPaymentMethod(ctx, db.UpdateStripeCustomerPaymentMethodParams{
+		UserID:                 userID,
+		DefaultPaymentMethodID: &paymentMethodID,
+	}); err != nil {
+		return domain.ErrInternalServer.WithCause(err)
+	}
+	return nil
+}
+
 func (uc *PaymentUseCase) HandleStripeWebhook(ctx context.Context, payload []byte, sigHeader string) error {
 	event, err := uc.stripe.ConstructWebhookEvent(payload, sigHeader)
 	if err != nil {

@@ -107,6 +107,7 @@ func main() {
 
 	// Payment
 	auth.POST("/payment/setup-intent", paymentH.CreateSetupIntent)
+	auth.POST("/payment/method", paymentH.SavePaymentMethod)
 
 	// Challenges
 	auth.POST("/challenges", challengeH.Create)
