@@ -101,8 +101,14 @@ func (q *Queries) UpdateUserStatus(ctx context.Context, arg UpdateUserStatusPara
 }
 
 func (q *Queries) SoftDeleteUser(ctx context.Context, id uuid.UUID) error {
-	_, err := q.pool.Exec(ctx,
-		`UPDATE users SET deleted_at=now(), status='deleted', updated_at=now() WHERE id=$1`, id)
+	_, err := q.pool.Exec(ctx, `
+		UPDATE user_agreements SET deleted_at=now(), updated_at=now()
+		WHERE user_id=$1 AND deleted_at IS NULL`, id)
+	if err != nil {
+		return err
+	}
+	_, err = q.pool.Exec(ctx,
+		`UPDATE users SET deleted_at=now(), status='deleted', age_verified_at=NULL, updated_at=now() WHERE id=$1`, id)
 	return err
 }
 
