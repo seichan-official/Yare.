@@ -6,6 +6,7 @@ import { api } from '@/lib/api'
 import { getAccessToken } from '@/lib/auth'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import { Lock } from 'lucide-react'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || '')
 
@@ -79,7 +80,7 @@ function CardForm({ clientSecret }: { clientSecret: string }) {
       {error && <p className="text-xs text-red-600">{error}</p>}
 
       <div className="flex items-center gap-2 p-2.5 rounded-lg" style={{ background: '#e0e7ff' }}>
-        <span className="text-indigo-600 text-sm">🔒</span>
+        <Lock size={13} className="text-indigo-600 flex-shrink-0" />
         <p className="text-[11px] leading-[1.5] m-0 text-indigo-700">
           カード情報はStripeが暗号化して管理します。Yareはカード番号を保持しません。
         </p>

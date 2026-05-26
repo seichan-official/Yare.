@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { Topbar } from '@/components/layout/Topbar'
 import { api } from '@/lib/api'
 import { getAccessToken } from '@/lib/auth'
-import { cn } from '@/lib/utils'
 import type { Notification } from '@/lib/types'
 import { formatDistanceToNow } from '@/lib/date'
 
@@ -12,11 +11,11 @@ const typeConfig: Record<string, { color: string; icon: string }> = {
   challenge_failed: { color: '#ef4444', icon: '✕' },
   challenge_completed: { color: '#22c55e', icon: '✓' },
   suspicious_commit: { color: '#f59e0b', icon: '⚠' },
-  payment_pre_notification: { color: '#f59e0b', icon: '💳' },
-  challenge_reminder: { color: '#4f46e5', icon: '🔥' },
+  payment_pre_notification: { color: '#f59e0b', icon: '¥' },
+  challenge_reminder: { color: '#4f46e5', icon: '!' },
   commit_valid: { color: '#22c55e', icon: '✓' },
   commit_invalid: { color: '#ef4444', icon: '✕' },
-  default: { color: '#4f46e5', icon: '🔔' },
+  default: { color: '#4f46e5', icon: '·' },
 }
 
 export default function NotificationsPage() {
@@ -67,7 +66,7 @@ export default function NotificationsPage() {
           <div className="text-center py-12 text-sm text-[#9d9d99]">通知はありません</div>
         ) : (
           <div className="flex flex-col gap-2">
-            {notifications.map((n) => {
+            {notifications.map((n, index) => {
               const cfg = typeConfig[n.type] || typeConfig.default
               const isUnread = !n.read_at
 
@@ -75,10 +74,11 @@ export default function NotificationsPage() {
                 <div
                   key={n.id}
                   onClick={() => isUnread && markRead(n.id)}
-                  className="flex gap-3 p-4 rounded-xl relative cursor-pointer transition-all hover:shadow-sm"
+                  className="animate-slide-in flex gap-3 p-4 rounded-xl relative cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
                   style={{
                     background: isUnread ? '#e0e7ff' : '#fff',
                     border: `0.5px solid ${isUnread ? '#4f46e5' + '40' : '#e4e4e0'}`,
+                    animationDelay: `${index * 50}ms`,
                   }}
                 >
                   {isUnread && (

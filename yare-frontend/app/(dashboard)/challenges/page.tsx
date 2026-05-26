@@ -11,7 +11,7 @@ import { formatShortDate } from '@/lib/date'
 
 const statusConfig = {
   active: { label: '進行中', cls: 'bg-indigo-50 text-indigo-700' },
-  completed: { label: '達成 🎉', cls: 'bg-green-50 text-green-700' },
+  completed: { label: '達成', cls: 'bg-green-50 text-green-700' },
   failed: { label: '未達成', cls: 'bg-red-50 text-red-700' },
   cancelled: { label: 'キャンセル', cls: 'bg-gray-100 text-gray-500' },
   under_review: { label: '審査中', cls: 'bg-amber-50 text-amber-700' },
@@ -45,7 +45,7 @@ export default function ChallengesPage() {
           </div>
         ) : (
           <div className="flex flex-col gap-3">
-            {challenges.map((c) => {
+            {challenges.map((c, i) => {
               const totalDays = Math.ceil((new Date(c.end_date).getTime() - new Date(c.start_date).getTime()) / 86400000) + 1
               const scfg = statusConfig[c.status] || { label: c.status, cls: '' }
 
@@ -53,8 +53,8 @@ export default function ChallengesPage() {
                 <Link
                   key={c.id}
                   href={`/challenges/${c.id}`}
-                  className="bg-white rounded-xl p-4 hover:shadow-sm transition-shadow"
-                  style={{ border: '0.5px solid #e4e4e0' }}
+                  className="animate-fade-up bg-white rounded-xl p-4 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+                  style={{ border: '0.5px solid #e4e4e0', animationDelay: `${i * 60}ms` }}
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div>

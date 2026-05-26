@@ -101,7 +101,7 @@ export default function HowItWorksPage() {
                 </div>
                 {s.note && (
                   <div className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 rounded-full text-[11px]" style={{ background: 'rgba(99,102,241,0.12)', color: '#818cf8' }}>
-                    <span>📌</span> {s.note}
+                    — {s.note}
                   </div>
                 )}
               </div>
