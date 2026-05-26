@@ -7,7 +7,12 @@ import { api } from '@/lib/api'
 import { getAccessToken } from '@/lib/auth'
 import type { GitHubRepository } from '@/lib/types'
 
-const LANGUAGES = ['TypeScript', 'JavaScript', 'Python', 'Go', 'Ruby', 'Java', 'Rust', 'PHP']
+const LANGUAGES = [
+  'TypeScript', 'JavaScript', 'Python', 'Go', 'Rust', 'Java', 'C', 'C++', 'C#',
+  'Ruby', 'PHP', 'Swift', 'Kotlin', 'Dart', 'Scala', 'R', 'Bash', 'SQL',
+  'HTML', 'CSS', 'Elixir', 'Haskell', 'Lua', 'Perl', 'Julia', 'Zig',
+  'Crystal', 'Clojure', 'F#', 'MATLAB',
+]
 const PERIODS = [
   { days: 7, label: '1週間' },
   { days: 14, label: '2週間' },
@@ -33,6 +38,7 @@ export default function NewChallengePage() {
   const [amount, setAmount] = useState(5000)
   const [loading, setLoading] = useState(false)
   const [reposLoading, setReposLoading] = useState(true)
+  const [langSearch, setLangSearch] = useState('')
 
   const penalty = Math.min(30000, Math.max(5000, amount * 2))
 
@@ -221,15 +227,37 @@ export default function NewChallengePage() {
 
             {/* Languages */}
             <div className="bg-white rounded-xl p-4" style={{ border: '0.5px solid #e4e4e0' }}>
-              <div className="text-[13px] font-medium mb-3">対象プログラミング言語</div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-[13px] font-medium">対象プログラミング言語</span>
+                  <span className="text-[11px] px-2 py-0.5 rounded-full" style={{ background: '#e0e7ff', color: '#4f46e5' }}>複数選択可</span>
+                </div>
+                {selectedLangs.length > 0 && (
+                  <span className="text-[11px] font-medium text-indigo-600">{selectedLangs.length}件選択中</span>
+                )}
+              </div>
+              <input
+                type="text"
+                placeholder="言語を絞り込む..."
+                value={langSearch}
+                onChange={(e) => setLangSearch(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg text-[12px] mb-3 outline-none transition-colors"
+                style={{
+                  border: '0.5px solid #e4e4e0',
+                  color: '#333',
+                  background: '#fafaf9',
+                }}
+              />
               <div className="flex flex-wrap gap-2">
-                {LANGUAGES.map((lang) => {
+                {LANGUAGES.filter((lang) =>
+                  lang.toLowerCase().includes(langSearch.toLowerCase())
+                ).map((lang) => {
                   const sel = selectedLangs.includes(lang)
                   return (
                     <div
                       key={lang}
                       onClick={() => toggleLang(lang)}
-                      className="px-3.5 py-1.5 rounded-full text-xs cursor-pointer transition-all"
+                      className="px-3.5 py-1.5 rounded-full text-xs cursor-pointer transition-all duration-150"
                       style={{
                         border: `1px solid ${sel ? '#4f46e5' : '#e4e4e0'}`,
                         background: sel ? '#e0e7ff' : '#fff',
@@ -237,10 +265,15 @@ export default function NewChallengePage() {
                         fontWeight: sel ? 500 : 400,
                       }}
                     >
-                      {lang}
+                      {sel && <span className="mr-1">✓</span>}{lang}
                     </div>
                   )
                 })}
+                {LANGUAGES.filter((lang) =>
+                  lang.toLowerCase().includes(langSearch.toLowerCase())
+                ).length === 0 && (
+                  <span className="text-[12px]" style={{ color: '#9d9d99' }}>該当する言語がありません</span>
+                )}
               </div>
             </div>
           </div>
